@@ -1,0 +1,33 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy using SSH
+        uses: :contentReference[oaicite:0]{index=0}@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /home/opc/project
+
+            git pull
+
+            docker build -t frontend ./frontend
+            docker build -t backend ./backend
+
+            docker stop frontend || true
+            docker rm frontend || true
+            docker stop backend || true
+            docker rm backend || true
+
+            docker run -d -p 3000:3000 --name frontend frontend
+            docker run -d -p 5000:5000 --name backend backend

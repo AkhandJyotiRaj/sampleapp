@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Store</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <h1 class="logo">ShopHub</h1>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/cart" class="cart-link">🛒 Cart</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <section class="hero">
+      <h2>Welcome to ShopHub</h2>
+      <p>Discover amazing products at great prices</p>
+    </section>
+
+    <section class="products">
+      <h3>Our Products</h3>
+      <div class="product-grid">
+        <% products.forEach(product => { %>
+          <div class="product-card">
+            <div class="product-image">
+              <img src="https://via.placeholder.com/200?text=<%= product.name %>" alt="<%= product.name %>">
+            </div>
+            <div class="product-info">
+              <h4><%= product.name %></h4>
+              <p class="description"><%= product.description %></p>
+              <p class="price">$<%= product.price.toFixed(2) %></p>
+              <div class="product-actions">
+                <a href="/product/<%= product.id %>" class="btn btn-secondary">View Details</a>
+                <button class="btn btn-primary" onclick="addToCart(<%= product.id %>, '<%= product.name %>')">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    </section>
+  </div>
+
+  <footer class="footer">
+    <p>&copy; 2024 ShopHub. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function addToCart(productId, productName) {
+      fetch('/add-to-cart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ productId })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert(productName + ' added to cart!');
+        }
+      })
+      .catch(err => console.error('Error:', err));
+    }
+  </script>
+</body>
+</html>

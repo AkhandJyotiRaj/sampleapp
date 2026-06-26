@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Confirmation - Shopping Store</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <h1 class="logo">ShopHub</h1>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/cart" class="cart-link">🛒 Cart</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <section class="confirmation">
+      <div class="confirmation-icon">✓</div>
+      <h1>Order Confirmed!</h1>
+      <p>Thank you for your purchase</p>
+
+      <div class="confirmation-details">
+        <div class="detail-item">
+          <span class="detail-label">Order Number:</span>
+          <span class="detail-value"><%= order.orderId %></span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Order Date:</span>
+          <span class="detail-value"><%= order.date %></span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Order Total:</span>
+          <span class="detail-value">$<%= order.total %></span>
+        </div>
+      </div>
+
+      <div class="confirmation-items">
+        <h2>Order Items</h2>
+        <table class="confirmation-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% order.items.forEach(item => { %>
+              <tr>
+                <td><%= item.name %></td>
+                <td><%= item.quantity %></td>
+                <td>$<%= item.price.toFixed(2) %></td>
+                <td>$<%= (item.price * item.quantity).toFixed(2) %></td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="confirmation-message">
+        <p>A confirmation email has been sent to your email address.</p>
+        <p>You can track your order status from your account.</p>
+      </div>
+
+      <a href="/" class="btn btn-primary btn-large">Continue Shopping</a>
+    </section>
+  </div>
+
+  <footer class="footer">
+    <p>&copy; 2024 ShopHub. All rights reserved.</p>
+  </footer>
+</body>
+</html>
